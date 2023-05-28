@@ -115,6 +115,7 @@ const handleOutgoingChat = () => {
     // create an outgoing chat div with user's message and append it to the chat container            
     const outgoingChatDiv = createElement(html, "outgoing");
     outgoingChatDiv.querySelector("p").textContent = userText;
+    document.querySelector(".default-text")?.remove();
     chatContainer.appendChild(outgoingChatDiv);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
     setTimeout(showTypingAnimation, 500);
@@ -133,6 +134,14 @@ deleteButton.addEventListener("click", () => {
         localStorage.removeItem("all-chats");
         loadDataFromLocalStorage();
     }
+});
+
+const initialHeight = chatInput.scrollHeight;
+
+chatInput.addEventListener("input", () => {
+    //Adjust the height of the input field dynamically based on its content
+    chatInput.style.height = `${initialHeight}px`;
+    chatInput.style.height = `${chatInput.scrollHeight}px`;
 });
 
 sendButton.addEventListener("click", handleOutgoingChat);
