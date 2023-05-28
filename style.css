@@ -38,8 +38,8 @@ body {
 }
 .default-text {
     display: flex;
-    margin-top: 50px;
     align-items: center;
+    margin-top: 30px;
     justify-content: center;
     flex-direction: column;
     height: 70vh;
@@ -49,7 +49,7 @@ body {
 }
 .default-text h1 {
     font-size: 4rem;
-    color: #f66e5d;
+    color: #dfbe3e;
 }
 :where(.chat-container, textarea)::-webkit-scrollbar {
     width: 6px;
@@ -148,7 +148,7 @@ span.material-symbols-rounded {
     bottom: 0;
     width: 100%;
     display: flex;
-    padding: 20px 10px;
+    padding: 20px 10px 45px 10px;
     justify-content: center;
     background: var(--outgoing-chat-bg);
     border: 1px solid var(--incoming-chat-border);
@@ -208,3 +208,82 @@ span.material-symbols-rounded {
     background: var(--incoming-chat-bg);
     border: 1px solid var(--incoming-chat-border);
 }
+
+/* Footer */
+footer {
+    font-size: 12px;
+    font-weight: 400;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 7px 0 15px;
+    justify-content: center;
+    color: var(--text-color);
+}
+
+
+/* For screens of width less than 400px. */  
+@media only screen and (max-width: 400px) {
+    .default-text h1 {
+        font-size: 3rem;
+    }
+    .chat .chat-details p {
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        padding: 0 40px 0 20px;
+    }
+    .default-text p {
+        font-size: 0.8rem;
+    }
+    footer {
+        font-size: 9px;
+    }
+}
+
+
+/* For screens of width less than 300px. */  
+@media only screen and (max-width: 300px) {
+    .default-text p {
+        font-size: 0.6rem;
+    }   
+    .chat .chat-details img {
+        width: 30px;
+        height: 30px;
+        align-self: flex-start;
+        object-fit: cover;
+        border-radius: 1.8px;
+    } 
+    .chat .chat-details p {
+        white-space: pre-wrap;
+        font-size: 0.8rem;
+        padding: 0 30px 0 15px;
+    }
+    .typing-container {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        padding: 15px 10px 30px 10px;
+    }
+    .typing-textarea textarea {
+        height: 40px;
+        font-size: 0.6rem;
+        max-height: 40px;
+        padding: 13px 45px 10px 15px;
+    }
+    .typing-textarea span {
+        font-size: 1rem;
+    }
+    .typing-content span {
+        height: 40px;
+        width: 40px;
+    }
+    .typing-controls span {
+        font-size: 1rem;
+    }
+    footer {
+        padding: 5px 0 7px;
+        font-size: 8px;
+    }
+}
+
