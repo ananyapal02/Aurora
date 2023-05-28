@@ -1,11 +1,32 @@
 const chatInput = document.querySelector("#chat-input");
 const sendButton = document.querySelector("#send-btn");
 const chatContainer = document.querySelector(".chat-container");
+const themeButton = document.querySelector("#theme-btn");
+const deleteButton = document.querySelector("#delete-btn");
 
 let userText = null;
 var token = config.MY_API_TOKEN;
 var key = config.SECRET_API_KEY;
 const API_KEY= token; //put your key like this const API_KEY = "Your_KEY_Here"
+
+// store the response in local storage so that on refresh of page it is still displayed.
+const loadDataFromLocalStorage = () => {
+    const themeColor = localStorage.getItem("theme-color");
+
+    document.body.classList.toggle("light-mode", themeColor === "light_mode");
+    themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
+
+    const defaultText = `<div class="default-text">
+                            <h1>Aurora</h1>
+                            <p>Start a conversation and explore the power of AI. 
+                            <br> Your chat history will be displayed here.</p>
+                        </div>`
+
+    chatContainer.innerHTML = localStorage.getItem("all-chats") || defaultText;
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+}
+
+loadDataFromLocalStorage();
 
 const createElement = (html, className) => {
     // create new div and apply chat, specified class and set html content of div
@@ -45,8 +66,19 @@ const getChatResponse = async (incomingChatDiv) => {
         console.log(error);
     }
 
+    // remove the typing animation, append the paragraph element and save chats to local storage
     incomingChatDiv.querySelector(".typing-animation").remove();
     incomingChatDiv.querySelector(".chat-details").appendChild(pElement);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+    localStorage.setItem("all-chats", chatContainer.innerHTML);
+}
+
+const copyResponse = (copyBtn) => {
+    // copy the text content of the response to clipboard
+    const responseTextElement = copyBtn.parentElement.querySelector("p");
+    navigator.clipboard.writeText(responseTextElement.textContent);
+    copyBtn.textContent = "done";
+    setTimeout(() => copyBtn.textContent = "content_copy", 1000);
 }
 
 const showTypingAnimation = () => {
@@ -59,12 +91,13 @@ const showTypingAnimation = () => {
                             <div class="typing-dot" style="--delay: 0.4s"></div>
                         </div>
                     </div>
-                    <span onclick class="material-symbols-rounded">content_copy</span>
+                    <span onclick="copyResponse(this)" class="material-symbols-rounded">content_copy</span>
                 </div>`;
 
     // create an incoming chat div with user's message and append it to the chat container            
     const incomingChatDiv = createElement(html, "incoming");
     chatContainer.appendChild(incomingChatDiv);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
     getChatResponse(incomingChatDiv);
 }
 
@@ -83,7 +116,23 @@ const handleOutgoingChat = () => {
     const outgoingChatDiv = createElement(html, "outgoing");
     outgoingChatDiv.querySelector("p").textContent = userText;
     chatContainer.appendChild(outgoingChatDiv);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
     setTimeout(showTypingAnimation, 500);
 }
+
+themeButton.addEventListener("click", () => {
+    //Toggle body's class for the theme mode and save the updated theme to the local storage
+    document.body.classList.toggle("light-mode");
+    localStorage.setItem("theme-color", themeButton.innerText);
+    themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
+});
+
+deleteButton.addEventListener("click", () => {
+    //remove chats from local storage and call loadDataFromLocalStorage function
+    if(confirm("Are you sure you want to delete all the chats?")) {
+        localStorage.removeItem("all-chats");
+        loadDataFromLocalStorage();
+    }
+});
 
 sendButton.addEventListener("click", handleOutgoingChat);
