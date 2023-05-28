@@ -38,6 +38,7 @@ body {
 }
 .default-text {
     display: flex;
+    margin-top: 50px;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -45,6 +46,10 @@ body {
     padding: 0 10px;
     text-align: center;
     color: var(--text-color);
+}
+.default-text h1 {
+    font-size: 4rem;
+    color: #f66e5d;
 }
 :where(.chat-container, textarea)::-webkit-scrollbar {
     width: 6px;
