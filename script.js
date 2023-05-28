@@ -8,6 +8,7 @@ let userText = null;
 var token = config.MY_API_TOKEN;
 var key = config.SECRET_API_KEY;
 const API_KEY= token; //put your key like this const API_KEY = "Your_KEY_Here"
+const initialHeight = chatInput.scrollHeight;
 
 // store the response in local storage so that on refresh of page it is still displayed.
 const loadDataFromLocalStorage = () => {
@@ -63,7 +64,9 @@ const getChatResponse = async (incomingChatDiv) => {
         pElement.textContent = response.choices[0].text.trim();
         //console.log(response);
     } catch(error) {
-        console.log(error);
+        //console.log(error);
+        pElement.classList.add("error");
+        pElement.textContent = "Oops! Something went wrong while retrieving the response. Please try again.";
     }
 
     // remove the typing animation, append the paragraph element and save chats to local storage
@@ -105,6 +108,9 @@ const handleOutgoingChat = () => {
     userText = chatInput.value.trim(); //get chatInput value and remove extra spaces
     if (!userText) return; //if chatInput is empty return from here
 
+    chatInput.value = "";
+    chatInput.style.height = `${initialHeight}px`;
+
     const html = `<div class="chat-content">
                     <div class="chat-details">
                         <img src="./images/User.jpg" alt="User Image">
@@ -136,12 +142,19 @@ deleteButton.addEventListener("click", () => {
     }
 });
 
-const initialHeight = chatInput.scrollHeight;
-
 chatInput.addEventListener("input", () => {
     //Adjust the height of the input field dynamically based on its content
     chatInput.style.height = `${initialHeight}px`;
     chatInput.style.height = `${chatInput.scrollHeight}px`;
+});
+
+chatInput.addEventListener("keydown", (e) => {
+    /*If the Enter key is pressed without Shift and window width is 
+    larger than 800px, handle the outgoing chat */
+    if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+        e.preventDefault();
+        handleOutgoingChat();
+    }
 });
 
 sendButton.addEventListener("click", handleOutgoingChat);

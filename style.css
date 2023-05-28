@@ -83,7 +83,7 @@ body {
     color: var(--icon-color);
     visibility: hidden;
 }
-.chat:hover .chat-content:not(:has(.typing-animation)) span {
+.chat:hover .chat-content:not(:has(.typing-animation, .error)) span {
     visibility: visible;
 }
 .chat .chat-details {
@@ -101,6 +101,9 @@ body {
     white-space: pre-wrap;
     font-size: 1.05rem;
     padding: 0 50px 0 25px;
+}
+.chat .chat-details p.error {
+    color: #e55855;
 }
 span.material-symbols-rounded {
     user-select: none;
@@ -162,6 +165,8 @@ span.material-symbols-rounded {
     border: none;
     resize: none;
     font-size: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
     border-radius: 4px;
     color: var(--text-color);
     padding: 15px 45px 15px 20px;
